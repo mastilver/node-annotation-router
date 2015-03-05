@@ -1,0 +1,3 @@
+test/**/index.js
+--require should
+--require test/assertions.js
