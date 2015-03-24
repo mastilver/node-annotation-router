@@ -37,16 +37,16 @@ describe('get routes with prefix', function(){
         nb.should.be.equal(4);
     });
 
-    it('should get the route of getAllUser', checkRoute('GET', 'prefix/user'));
+    it('should get the route of getAllUser', checkRoute('GET', 'prefix/user', 'getUsers'));
 
-    it('should get the root of getUser', checkRoute('GET', 'prefix/user/{id}'));
+    it('should get the route of getUser', checkRoute('GET', 'prefix/user/{id}', 'getUser'));
 
-    it('should get the route of getAllUser a different prefix', checkRoute('GET', 'secondPrefix/user'));
+    it('should get the route of getAllUser a different prefix', checkRoute('GET', 'secondPrefix/user', 'getUsers'));
 
-    it('should get the root of getUser a different prefix', checkRoute('GET', 'secondPrefix/user/{id}'));
+    it('should get the route of getUser a different prefix', checkRoute('GET', 'secondPrefix/user/{id}', 'getUser'));
 
 
-    function checkRoute(method, url){
+    function checkRoute(method, url, functionResult){
         return function(){
             var route = routes[method + '-' + url];
 
@@ -54,6 +54,9 @@ describe('get routes with prefix', function(){
 
             route.should.have.property('url', url);
             route.should.have.property('method', method);
+
+            route.should.have.property('action');
+            route.action().should.be.equal(functionResult);
         };
     }
 });

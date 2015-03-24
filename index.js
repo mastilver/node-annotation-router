@@ -11,18 +11,18 @@ module.exports = function(pattern, eachCallback, finalizeCallback){
         for(var i in matches){
 
 
-            annotationParser.getAllAnnotations(matches[i], function(err, annotations){
+            annotationParser(matches[i], function(err, annotations){
 
                 // loop through the functions
                 for(var functionName in annotations.functions){
 
 
-                    var urls = getUrls(annotations.module, annotations.functions[functionName]);
+                    var urls = getUrls(annotations.module.annotations, annotations.functions[functionName].annotations);
                     if(urls.length === 0){
                         continue;
                     }
 
-                    var method = getMethod(annotations.functions[functionName], functionName);
+                    var method = getMethod(annotations.functions[functionName].annotations, functionName);
                     if(method instanceof Error){
                         return finalizeCallback(method);
                     }
@@ -32,6 +32,7 @@ module.exports = function(pattern, eachCallback, finalizeCallback){
                         eachCallback(null, {
                             url: urls[i],
                             method: method,
+                            action: annotations.functions[functionName].ref,
                         });
                     }
                 }

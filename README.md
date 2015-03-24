@@ -52,7 +52,9 @@ annotationRouter('controller.js', function(err, route){
         {
             url: 'api/collection',
             method: 'GET',
-        }
+            action: /* the action function */
+        },
+        ...
     */
 }, function(err){
     // all routes have been parsed
@@ -84,6 +86,11 @@ Type: `string`
 
 Type: `string`  
 Possible Values: `GET`, `POST`, `PUT`, `DELETE`, `HEAD`  
+
+##### route.action
+
+Type: `Function`
+> The action function associated with the route  
 
 #### finalCallback(err)
 
