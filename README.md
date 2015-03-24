@@ -15,23 +15,23 @@ given this file `controller.js`
 
 ```
 /*
-    @routePrefix('api')
+    @routePrefix('/api')
 */
 module.exports = {
 
     // @httpGet()
-    // @route('collection')
+    // @route('/collection')
     collection: function(){
 
     },
 
 
-    // @route('collection/{id}')
+    // @route('/collection/{id}')
     getIndex: function(){
 
     },
 
-    // @route('collection')
+    // @route('/collection')
     postItem: function(){
 
     },
@@ -50,7 +50,7 @@ annotationRouter('controller.js', function(err, route){
     console.log(route);
     /*
         {
-            url: 'api/collection',
+            url: '/api/collection',
             method: 'GET',
             action: /* the action function */
         },

@@ -75,12 +75,7 @@ function getUrls(moduleAnnotations, functionAnnotations){
     if(moduleAnnotations.routePrefix){
 
         for(var i in moduleAnnotations.routePrefix){
-            var routePrefix = moduleAnnotations.routePrefix[i][0];
-            if(routePrefix[routePrefix.length - 1] === '/'){
-                routePrefix = routePrefix.slice(0, routePrefix.length - 1);
-            }
-
-            routePrefixs.push(routePrefix);
+            routePrefixs.push(moduleAnnotations.routePrefix[i][0]);
         }
     }
 
@@ -94,12 +89,6 @@ function getUrls(moduleAnnotations, functionAnnotations){
         for(var j in functionAnnotations.route){
 
             var url = functionAnnotations.route[j][0];
-
-            // add an '/' at the begining
-            if(routePrefixs[i] && url[0] !== '/'){
-                url = '/' + url;
-            }
-
             urls.push(routePrefixs[i] + url);
         }
     }

@@ -1,24 +1,24 @@
 module.exports = {
 
-    // @route('company{companyId}/user')
-    // @route('user')
+    // @route('/company{companyId}/user')
+    // @route('/user')
     getAll: function(){
         return 'getUsers';
     },
 
-    // @route('user/{id}')
+    // @route('/user/{id}')
     getUser: function(){
         return 'getUser';
     },
 
-    // @route('user')
+    // @route('/user')
     postUser: function(){
         return 'addUser';
     },
 
 
     // @httpPut()
-    // @route('user/{id}')
+    // @route('/user/{id}')
     functionToEditTheUser: function(){
         return 'updateUser';
     },

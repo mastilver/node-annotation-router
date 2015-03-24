@@ -1,8 +1,8 @@
-// @routePrefix('prefix')
-// @routePrefix('secondPrefix/')
+// @routePrefix('/prefix')
+// @routePrefix('/secondPrefix')
 module.exports = {
 
-    // @route('user')
+    // @route('/user')
     getAllUser: function(){
         return 'getUsers';
     },

@@ -37,13 +37,13 @@ describe('get routes with prefix', function(){
         nb.should.be.equal(4);
     });
 
-    it('should get the route of getAllUser', checkRoute('GET', 'prefix/user', 'getUsers'));
+    it('should get the route of getAllUser', checkRoute('GET', '/prefix/user', 'getUsers'));
 
-    it('should get the route of getUser', checkRoute('GET', 'prefix/user/{id}', 'getUser'));
+    it('should get the route of getUser', checkRoute('GET', '/prefix/user/{id}', 'getUser'));
 
-    it('should get the route of getAllUser a different prefix', checkRoute('GET', 'secondPrefix/user', 'getUsers'));
+    it('should get the route of getAllUser a different prefix', checkRoute('GET', '/secondPrefix/user', 'getUsers'));
 
-    it('should get the route of getUser a different prefix', checkRoute('GET', 'secondPrefix/user/{id}', 'getUser'));
+    it('should get the route of getUser a different prefix', checkRoute('GET', '/secondPrefix/user/{id}', 'getUser'));
 
 
     function checkRoute(method, url, functionResult){
