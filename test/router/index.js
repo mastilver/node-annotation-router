@@ -37,18 +37,18 @@ describe('get basic routes', function(){
         nb.should.be.equal(5);
     });
 
-    it('should get the first route of getAll', checkRoute('GET', '/user', 'getUsers'));
+    it('should get the first route of getAll', checkRoute('GET', '/user', 'getAll', 'getUsers'));
 
-    it('should get the second route of getAll', checkRoute('GET', '/company{companyId}/user', 'getUsers'));
+    it('should get the second route of getAll', checkRoute('GET', '/company{companyId}/user', 'getAll', 'getUsers'));
 
-    it('should get the route of getUser', checkRoute('GET', '/user/{id}', 'getUser'));
+    it('should get the route of getUser', checkRoute('GET', '/user/{id}', 'getUser', 'getUser'));
 
-    it('should get the route of postUser', checkRoute('POST', '/user', 'addUser'));
+    it('should get the route of postUser', checkRoute('POST', '/user', 'postUser', 'addUser'));
 
-    it('should get the route of functionToEditTheUser', checkRoute('PUT', '/user/{id}', 'updateUser'));
+    it('should get the route of functionToEditTheUser', checkRoute('PUT', '/user/{id}', 'functionToEditTheUser', 'updateUser'));
 
 
-    function checkRoute(method, url, functionResult){
+    function checkRoute(method, url, actionName, functionResult){
         return function(){
             var route = routes[method + '-' + url];
 
@@ -59,6 +59,9 @@ describe('get basic routes', function(){
 
             route.should.have.property('action');
             route.action().should.be.equal(functionResult);
+
+            route.should.have.property('controllerName', 'mock');
+            route.should.have.property('actionName', actionName);
         };
     }
 });

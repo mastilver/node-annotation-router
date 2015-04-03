@@ -33,6 +33,8 @@ module.exports = function(pattern, eachCallback, finalizeCallback){
                             url: urls[i],
                             method: method,
                             action: annotations.functions[functionName].ref,
+                            actionName: functionName,
+                            controllerName: annotations.module.name,
                         });
                     }
                 }

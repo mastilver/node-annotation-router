@@ -37,16 +37,16 @@ describe('get routes with prefix', function(){
         nb.should.be.equal(4);
     });
 
-    it('should get the route of getAllUser', checkRoute('GET', '/prefix/user', 'getUsers'));
+    it('should get the route of getAllUser', checkRoute('GET', '/prefix/user', 'getAllUser', 'getUsers'));
 
-    it('should get the route of getUser', checkRoute('GET', '/prefix/user/{id}', 'getUser'));
+    it('should get the route of getUser', checkRoute('GET', '/prefix/user/{id}', 'getUser', 'getUser'));
 
-    it('should get the route of getAllUser a different prefix', checkRoute('GET', '/secondPrefix/user', 'getUsers'));
+    it('should get the route of getAllUser a different prefix', checkRoute('GET', '/secondPrefix/user', 'getAllUser', 'getUsers'));
 
-    it('should get the route of getUser a different prefix', checkRoute('GET', '/secondPrefix/user/{id}', 'getUser'));
+    it('should get the route of getUser a different prefix', checkRoute('GET', '/secondPrefix/user/{id}', 'getUser', 'getUser'));
 
 
-    function checkRoute(method, url, functionResult){
+    function checkRoute(method, url, actionName, functionResult){
         return function(){
             var route = routes[method + '-' + url];
 
@@ -57,6 +57,9 @@ describe('get routes with prefix', function(){
 
             route.should.have.property('action');
             route.action().should.be.equal(functionResult);
+
+            route.should.have.property('controllerName', 'mock');
+            route.should.have.property('actionName', actionName);
         };
     }
 });
