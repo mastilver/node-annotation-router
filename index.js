@@ -1,15 +1,19 @@
-var globby = require('globby');
-var annotationParser = require('annotation-parser');
 var path = require('path');
+
+var globby = require('globby');
+
+var annotationParser = require('annotation-parser');
 
 module.exports = function(pattern, eachCallback, finalizeCallback){
 
 
     globby(pattern, function(err, matches){
 
-        // loop through the files
-        for(var i in matches){
+        var matchesResolved = 0;
 
+
+        // loop through the files
+        for(var i = 0, len = matches.length; i < len; i++){
 
             annotationParser(matches[i], function(err, annotations){
 
@@ -39,8 +43,14 @@ module.exports = function(pattern, eachCallback, finalizeCallback){
                     }
                 }
 
-                finalizeCallback(null);
+                if(++matchesResolved === matches.length){
+                    finalizeCallback(null);
+                }
             });
+        }
+
+        if(matches.length === 0){
+            finalizeCallback(null);
         }
     });
 };
