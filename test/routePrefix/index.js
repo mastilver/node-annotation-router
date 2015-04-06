@@ -3,7 +3,7 @@ var should = require('should');
 
 var annotationRouter = require('../../index.js');
 
-var path = 'test/routePrefix/mock.js';
+var path = './mock.js';
 
 
 describe('get routes with prefix', function(){

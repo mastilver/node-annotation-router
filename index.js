@@ -1,11 +1,13 @@
 var path = require('path');
 
 var globby = require('globby');
+var caller = require('caller');
 
 var annotationParser = require('annotation-parser');
 
 module.exports = function(pattern, eachCallback, finalizeCallback){
 
+    pattern = path.resolve(path.dirname(caller()), pattern);
 
     globby(pattern, function(err, matches){
 

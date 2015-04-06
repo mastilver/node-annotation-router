@@ -3,7 +3,7 @@ var should = require('should');
 
 var annotationRouter = require('../../index.js');
 
-var path = 'test/multipleController/*Ctrl.js';
+var path = './*Ctrl.js';
 
 
 describe('when there is several controllers that match the pattern', function(){

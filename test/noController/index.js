@@ -3,7 +3,7 @@ var should = require('should');
 
 var annotationRouter = require('../../index.js');
 
-var path = 'test/noController/doNotExist.js';
+var path = './doNotExist.js';
 
 
 describe('when there is no controller that match the pattern', function(){

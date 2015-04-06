@@ -3,7 +3,7 @@ var should = require('should');
 
 var annotationRouter = require('../../index.js');
 
-var path = 'test/router/mock.js';
+var path = './mock.js';
 
 
 describe('get basic routes', function(){

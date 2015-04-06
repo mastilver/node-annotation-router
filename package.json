@@ -1,6 +1,6 @@
 {
   "name": "annotation-router",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Bring annotations to your everyday routing framework",
   "main": "index.js",
   "directories": {
@@ -26,7 +26,8 @@
     "should": "^5.0.1"
   },
   "dependencies": {
-    "annotation-parser": "^2.3.0",
+    "annotation-parser": "^2.4.1",
+    "caller": "^1.0.0",
     "globby": "^1.2.0"
   }
 }
