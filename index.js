@@ -9,49 +9,50 @@ module.exports = function(pattern, eachCallback, finalizeCallback){
 
     pattern = path.resolve(path.dirname(caller()), pattern);
 
-    globby(pattern, function(err, matches){
+    globby(pattern, function(err, files){
 
-        var matchesResolved = 0;
-
+        var fileCompleted = 0;
 
         // loop through the files
-        for(var i = 0, len = matches.length; i < len; i++){
+        for(var i = 0, len = files.length; i < len; i++){
 
-            annotationParser(matches[i], function(err, annotations){
+            (function(fileIndex){
+                annotationParser(files[fileIndex], function(err, annotations){
 
-                // loop through the functions
-                for(var functionName in annotations.functions){
+                    // loop through the functions
+                    for(var functionName in annotations.functions){
 
 
-                    var urls = getUrls(annotations.module.annotations, annotations.functions[functionName].annotations);
-                    if(urls.length === 0){
-                        continue;
+                        var urls = getUrls(annotations.module.annotations, annotations.functions[functionName].annotations);
+                        if(urls.length === 0){
+                            continue;
+                        }
+
+                        var method = getMethod(annotations.functions[functionName].annotations, functionName);
+                        if(method instanceof Error){
+                            return finalizeCallback(method);
+                        }
+
+                        // loop through the urls (one function can have multiple route)
+                        for(var i in urls){
+                            eachCallback(null, {
+                                url: urls[i],
+                                method: method,
+                                action: annotations.functions[functionName].ref,
+                                actionName: functionName,
+                                controller: pathParse(files[fileIndex]),
+                            });
+                        }
                     }
 
-                    var method = getMethod(annotations.functions[functionName].annotations, functionName);
-                    if(method instanceof Error){
-                        return finalizeCallback(method);
+                    if(++fileCompleted === files.length){
+                        finalizeCallback(null);
                     }
-
-                    // loop through the urls (one function can have multiple route)
-                    for(var i in urls){
-                        eachCallback(null, {
-                            url: urls[i],
-                            method: method,
-                            action: annotations.functions[functionName].ref,
-                            actionName: functionName,
-                            controllerName: annotations.module.name,
-                        });
-                    }
-                }
-
-                if(++matchesResolved === matches.length){
-                    finalizeCallback(null);
-                }
-            });
+                });
+            })(i);
         }
 
-        if(matches.length === 0){
+        if(files.length === 0){
             finalizeCallback(null);
         }
     });
@@ -117,3 +118,18 @@ var methodEnum = {
     delete: 3,
     head: 4,
 };
+
+// mimics the path.parse function
+function pathParse(fullPath){
+
+    var parsedPath = {
+        ext: path.extname(fullPath),
+        dir: path.dirname(fullPath),
+        full: fullPath,
+        base:  path.basename(fullPath),
+    };
+
+    parsedPath.name = path.basename(fullPath, parsedPath.ext);
+
+    return parsedPath;
+}

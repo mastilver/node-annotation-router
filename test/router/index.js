@@ -60,8 +60,14 @@ describe('get basic routes', function(){
             route.should.have.property('action');
             route.action().should.be.equal(functionResult);
 
-            route.should.have.property('controllerName', 'mock');
             route.should.have.property('actionName', actionName);
+
+            route.should.have.property('controller');
+            route.controller.should.have.property('name', 'mock');
+            route.controller.should.have.property('ext', '.js');
+            route.controller.should.have.property('base', 'mock.js');
+            route.controller.should.have.property('dir').which.containEql('test/router');
+            route.controller.should.have.property('full').which.containEql('test/router/mock.js');
         };
     }
 });
