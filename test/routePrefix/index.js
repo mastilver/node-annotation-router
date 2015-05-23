@@ -1,6 +1,5 @@
 var should = require('should');
 
-
 var annotationRouter = require('../../index.js');
 
 var path = './mock.js';
@@ -66,6 +65,7 @@ describe('get routes with prefix', function(){
             route.controller.should.have.property('base', 'mock.js');
             route.controller.should.have.property('dir').which.containEql('test/routePrefix');
             route.controller.should.have.property('full').which.containEql('test/routePrefix/mock.js');
+            route.controller.should.have.property('annotations').which.is.empty;
         };
     }
 });

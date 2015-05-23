@@ -37,18 +37,17 @@ describe('get basic routes', function(){
         nb.should.be.equal(5);
     });
 
-    it('should get the first route of getAll', checkRoute('GET', '/user', 'getAll', 'getUsers'));
+    it('should get the first route of getAll', checkRoute('GET', '/user', 'getAll', 'getUsers', []));
 
-    it('should get the second route of getAll', checkRoute('GET', '/company{companyId}/user', 'getAll', 'getUsers'));
+    it('should get the second route of getAll', checkRoute('GET', '/company{companyId}/user', 'getAll', 'getUsers', []));
 
-    it('should get the route of getUser', checkRoute('GET', '/user/{id}', 'getUser', 'getUser'));
+    it('should get the route of getUser', checkRoute('GET', '/user/{id}', 'getUser', 'getUser', []));
 
-    it('should get the route of postUser', checkRoute('POST', '/user', 'postUser', 'addUser'));
+    it('should get the route of postUser', checkRoute('POST', '/user', 'postUser', 'addUser', []));
 
-    it('should get the route of functionToEditTheUser', checkRoute('PUT', '/user/{id}', 'functionToEditTheUser', 'updateUser'));
+    it('should get the route of functionToEditTheUser', checkRoute('PUT', '/user/{id}', 'functionToEditTheUser', 'updateUser', ['isAdmin']));
 
-
-    function checkRoute(method, url, actionName, functionResult){
+    function checkRoute(method, url, actionName, functionResult, nonOfficialAnnotations){
         return function(){
             var route = routes[method + '-' + url];
 
@@ -62,12 +61,15 @@ describe('get basic routes', function(){
 
             route.should.have.property('actionName', actionName);
 
+            route.should.have.property('annotations').which.have.properties(nonOfficialAnnotations);
+
             route.should.have.property('controller');
             route.controller.should.have.property('name', 'mock');
             route.controller.should.have.property('ext', '.js');
             route.controller.should.have.property('base', 'mock.js');
             route.controller.should.have.property('dir').which.containEql('test/router');
             route.controller.should.have.property('full').which.containEql('test/router/mock.js');
+            route.controller.should.have.property('annotations').which.containEql('IsLogIn');
         };
     }
 });

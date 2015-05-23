@@ -1,3 +1,5 @@
+
+// @IsLogIn()
 module.exports = {
 
     // @route('/company{companyId}/user')
@@ -17,6 +19,7 @@ module.exports = {
     },
 
 
+    // @isAdmin()
     // @httpPut()
     // @route('/user/{id}')
     functionToEditTheUser: function(){

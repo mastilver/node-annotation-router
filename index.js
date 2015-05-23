@@ -33,6 +33,12 @@ module.exports = function(pattern, eachCallback, finalizeCallback){
                             return finalizeCallback(method);
                         }
 
+
+                        var controller = pathParse(files[fileIndex]);
+                        controller.annotations = extractControllerAnnotations(annotations.module.annotations);
+
+                        var actionAnnotations = extractActionAnnotations(annotations.functions[functionName].annotations);
+
                         // loop through the urls (one function can have multiple route)
                         for(var i in urls){
                             eachCallback(null, {
@@ -40,7 +46,8 @@ module.exports = function(pattern, eachCallback, finalizeCallback){
                                 method: method,
                                 action: annotations.functions[functionName].ref,
                                 actionName: functionName,
-                                controller: pathParse(files[fileIndex]),
+                                annotations: actionAnnotations,
+                                controller: controller,
                             });
                         }
                     }
@@ -132,4 +139,29 @@ function pathParse(fullPath){
     parsedPath.name = path.basename(fullPath, parsedPath.ext);
 
     return parsedPath;
+}
+
+function copyObject(object, except){
+
+    if(!except){
+        except = [];
+    }
+
+    var copy = {};
+
+    for(var i in object){
+        if(except.indexOf(i) === -1){
+            copy[i] = object[i];
+        }
+    }
+
+    return copy;
+}
+
+function extractControllerAnnotations(annotations){
+    return copyObject(annotations, ['routePrefix']);
+}
+
+function extractActionAnnotations(annotations){
+    return copyObject(annotations, ['route', 'httpGet', 'httpPost', 'httpPut', 'httpDelete', 'httpHead']);
 }
