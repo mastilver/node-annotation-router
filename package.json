@@ -26,7 +26,7 @@
     "should": "^5.0.1"
   },
   "dependencies": {
-    "annotation-parser": "^2.4.1",
+    "annotation-parser": "^2.5.2",
     "caller": "^1.0.0",
     "globby": "^1.2.0"
   }

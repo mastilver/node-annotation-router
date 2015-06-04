@@ -19,37 +19,16 @@ module.exports = function(pattern, eachCallback, finalizeCallback){
             (function(fileIndex){
                 annotationParser(files[fileIndex], function(err, annotations){
 
-                    // loop through the functions
-                    for(var functionName in annotations.functions){
+                    var routes = extractRoutes(annotations);
+
+                    var controller = pathParse(files[fileIndex]);
+                    controller.annotations = extractControllerAnnotations(annotations.module.annotations);
 
 
-                        var urls = getUrls(annotations.module.annotations, annotations.functions[functionName].annotations);
-                        if(urls.length === 0){
-                            continue;
-                        }
+                    setControllerOnRoutes(controller, routes);
 
-                        var method = getMethod(annotations.functions[functionName].annotations, functionName);
-                        if(method instanceof Error){
-                            return finalizeCallback(method);
-                        }
-
-
-                        var controller = pathParse(files[fileIndex]);
-                        controller.annotations = extractControllerAnnotations(annotations.module.annotations);
-
-                        var actionAnnotations = extractActionAnnotations(annotations.functions[functionName].annotations);
-
-                        // loop through the urls (one function can have multiple route)
-                        for(var i in urls){
-                            eachCallback(null, {
-                                url: urls[i],
-                                method: method,
-                                action: annotations.functions[functionName].ref,
-                                actionName: functionName,
-                                annotations: actionAnnotations,
-                                controller: controller,
-                            });
-                        }
+                    for(var i = 0, len = routes.length; i < len; i++){
+                        eachCallback(null, routes[i]);
                     }
 
                     if(++fileCompleted === files.length){
@@ -64,6 +43,47 @@ module.exports = function(pattern, eachCallback, finalizeCallback){
         }
     });
 };
+
+function extractRoutes(annotations){
+
+    var routes = [];
+
+    // loop through the functions
+    for(var functionName in annotations.functions){
+
+        var urls = getUrls(annotations.module.annotations, annotations.functions[functionName].annotations);
+        if(urls.length === 0){
+            continue;
+        }
+
+        var method = getMethod(annotations.functions[functionName].annotations, functionName);
+
+
+        var actionAnnotations = extractActionAnnotations(annotations.functions[functionName].annotations);
+
+        // loop through the urls (one function can have multiple route)
+        for(var i in urls){
+            routes.push({
+                url: urls[i],
+                method: method,
+                action: annotations.functions[functionName].ref,
+                actionName: functionName,
+                annotations: actionAnnotations,
+            });
+        }
+    }
+
+    return routes;
+}
+
+function setControllerOnRoutes(controller, routes){
+
+    for(var i = 0, len = routes.length; i < len; i++){
+        routes[i].controller = controller;
+    }
+
+    return routes;
+}
 
 function getMethod(functionAnnotations, functionName){
 
@@ -86,7 +106,7 @@ function getMethod(functionAnnotations, functionName){
         }
     }
 
-    return new Error('could not determind the correct method for ' + functionName);
+    throw new Error('could not determind the correct method for ' + functionName);
 }
 
 function getUrls(moduleAnnotations, functionAnnotations){
