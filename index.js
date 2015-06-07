@@ -44,6 +44,34 @@ module.exports = function(pattern, eachCallback, finalizeCallback){
     });
 };
 
+module.exports.sync =  function(pattern){
+
+    pattern = path.resolve(path.dirname(caller()), pattern);
+
+    var files = globby.sync(pattern);
+
+    var routes = [];
+
+    for(var i = 0, len = files.length; i < len; i++){
+
+        var annotations = annotationParser.sync(files[i]);
+
+
+        var fileRoutes = extractRoutes(annotations);
+
+        var controller = pathParse(files[i]);
+        controller.annotations = extractControllerAnnotations(annotations.module.annotations);
+
+
+        setControllerOnRoutes(controller, fileRoutes);
+
+        routes = routes.concat(fileRoutes);
+    }
+
+    return routes;
+};
+
+
 function extractRoutes(annotations){
 
     var routes = [];
