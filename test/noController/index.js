@@ -8,24 +8,54 @@ var path = './doNotExist.js';
 
 describe('when there is no controller that match the pattern', function(){
 
-    var routes = {};
-    var err;
+    describe('asynchronous', function(){
 
-    before(function(done){
-        annotationRouter(path, function(e, route){
+        var routes = {};
+        var err;
 
-            if(e) err = e;
+        before(function(done){
+            annotationRouter(path, function(e, route){
 
-            routes[route.method + '-' + route.url] = route;
+                if(e) return err = e;
 
-        }, done);
+                routes[route.method + '-' + route.url] = route;
+
+            }, done);
+        });
+
+        it('should have gone well', function(){
+            should.ifError(err);
+        });
+
+        it('should have no route', function(){
+            routes.should.be.empty;
+        });
     });
 
-    it('should have gone well', function(){
-        should.ifError(err);
-    });
 
-    it('should have no route', function(){
-        routes.should.be.empty;
+
+    describe('synchronous', function(){
+
+        var routes = {};
+        var err;
+
+        before(function(){
+
+            try {
+                annotationRouter.sync(path).map(function(route){
+                    routes[route.method + '-' + route.url] = route;
+                });
+            } catch (e) {
+                err = e;
+            }
+        });
+
+        it('should have gone well', function(){
+            should.ifError(err);
+        });
+
+        it('should have no route', function(){
+            routes.should.be.empty;
+        });
     });
 });
