@@ -112,5 +112,6 @@ function checkRoute(method, url, actionName, functionResult){
         route.controller.should.have.property('dir').which.containEql('test/routePrefix');
         route.controller.should.have.property('full').which.containEql('test/routePrefix/mock.js');
         route.controller.should.have.property('annotations').which.is.empty;
+        route.controller.should.have.property('rawAnnotations').which.is.empty;
     };
 }

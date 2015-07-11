@@ -23,6 +23,7 @@ module.exports = function(pattern, eachCallback, finalizeCallback){
 
                     var controller = pathParse(files[fileIndex]);
                     controller.annotations = extractControllerAnnotations(annotations.module.annotations);
+                    controller.rawAnnotations = extractControllerAnnotations(annotations.module.rawAnnotations);
 
 
                     setControllerOnRoutes(controller, routes);
@@ -61,7 +62,8 @@ module.exports.sync =  function(pattern){
 
         var controller = pathParse(files[i]);
         controller.annotations = extractControllerAnnotations(annotations.module.annotations);
-
+        controller.rawAnnotations = extractControllerAnnotations(annotations.module.rawAnnotations);
+        
 
         setControllerOnRoutes(controller, fileRoutes);
 
@@ -88,6 +90,7 @@ function extractRoutes(annotations){
 
 
         var actionAnnotations = extractActionAnnotations(annotations.functions[functionName].annotations);
+        var actionRawAnnotations = extractActionAnnotations(annotations.functions[functionName].rawAnnotations);
 
         // loop through the urls (one function can have multiple route)
         for(var i in urls){
@@ -97,6 +100,7 @@ function extractRoutes(annotations){
                 action: annotations.functions[functionName].ref,
                 actionName: functionName,
                 annotations: actionAnnotations,
+                rawAnnotations: actionRawAnnotations,
             });
         }
     }
