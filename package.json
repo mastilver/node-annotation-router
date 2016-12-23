@@ -21,13 +21,13 @@
   "homepage": "https://github.com/mastilver/node-annotation-router",
   "devDependencies": {
     "coveralls": "^2.11.2",
-    "istanbul": "^0.3.7",
-    "mocha": "^2.1.0",
-    "should": "^5.0.1"
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "should": "^11.1.2"
   },
   "dependencies": {
     "annotation-parser": "^2.6.1",
     "caller": "^1.0.0",
-    "globby": "^1.2.0"
+    "globby": "^6.1.0"
   }
 }
